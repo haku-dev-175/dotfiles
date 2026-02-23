@@ -28,6 +28,7 @@
       gcc
       gnumake
       cmake
+      lua5_1
       luarocks
     ];
   };
