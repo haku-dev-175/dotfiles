@@ -15,9 +15,15 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # For NixOS on WSL
+    nixos-wsl = {
+      url = "github:nix-community/NixOS-WSL";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
   };
 
-  outputs = { self, nixpkgs, home-manager, nix-darwin, ... }:
+  outputs = { self, nixpkgs, home-manager, nix-darwin, nixos-wsl, ... }:
     let
       localConfig = import ./local.nix;
     in
@@ -33,6 +39,31 @@
             ./nixos/configuration.nix
 
             # Integrate home-manager as NixOS module
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.backupFileExtension = "backup";
+              home-manager.users.${localConfig.username} = import ./home-manager/home.nix;
+              home-manager.extraSpecialArgs = {
+                machineConfig = {
+                  username = localConfig.username;
+                  homeDirectory = localConfig.homeDirectory;
+                  extraFishPaths = localConfig.extraFishPaths;
+                };
+              };
+            }
+          ];
+        };
+
+        # NixOS on WSL
+        nixos-wsl = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          specialArgs = { inherit localConfig; };
+          modules = [
+            nixos-wsl.nixosModules.default
+            ./nixos/configuration-wsl.nix
+
             home-manager.nixosModules.home-manager
             {
               home-manager.useGlobalPkgs = true;

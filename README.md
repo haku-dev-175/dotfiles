@@ -66,6 +66,15 @@ git add -A
 sudo nixos-rebuild switch --flake .#nixos
 ```
 
+### NixOS on WSL
+
+1. Stage and apply:
+
+```bash
+git add -A
+sudo nixos-rebuild switch --flake .#nixos-wsl
+```
+
 ### macOS (nix-darwin)
 
 1. First time — bootstrap nix-darwin:
@@ -149,9 +158,10 @@ cd ~/Projects/dotfiles
 nix flake update
 
 # Then rebuild for your platform
-sudo nixos-rebuild switch --flake .#nixos    # NixOS
-darwin-rebuild switch --flake .#mac          # macOS
-home-manager switch --flake .#wsl            # WSL
+sudo nixos-rebuild switch --flake .#nixos        # NixOS (bare metal)
+sudo nixos-rebuild switch --flake .#nixos-wsl    # NixOS on WSL
+darwin-rebuild switch --flake .#mac              # macOS
+home-manager switch --flake .#wsl                # WSL (home-manager only)
 ```
 
 Update Neovim plugins separately:
@@ -164,12 +174,14 @@ Update Neovim plugins separately:
 
 ```
 dotfiles/
-├── flake.nix                    # Entry point — defines nixos, mac, wsl targets
+├── flake.nix                    # Entry point — defines nixos, nixos-wsl, mac, wsl targets
 ├── flake.lock
 ├── local.nix                    # Machine-specific overrides (edit per machine)
 ├── local.nix.example            # Documented template showing all options
 ├── nixos/
-│   ├── configuration.nix        # NixOS system config (boot, GNOME, audio, etc.)
+│   ├── configuration.nix        # Bare-metal NixOS (boot, GNOME, audio, etc.)
+│   ├── configuration-wsl.nix    # NixOS-WSL specific config
+│   ├── configuration-base.nix   # Shared NixOS config (locale, nix, packages)
 │   ├── hardware-configuration.nix
 │   └── modules/
 │       ├── system-packages.nix  # git, jujutsu, nodejs, python3, build tools
