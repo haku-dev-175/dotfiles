@@ -1,0 +1,23 @@
+# local.nix — machine-specific overrides (not committed to git)
+# Copy this file to local.nix and fill in your values.
+{
+  # Machine hostname (used by NixOS networking.hostName)
+  hostname = "my-machine";
+
+  # Username and home directory
+  username = "hyb175";
+  homeDirectory = "/home/hyb175";  # macOS: /Users/hyb175
+
+  # Extra paths to add to Fish shell $PATH
+  extraFishPaths = [
+    # "/opt/homebrew/opt/mysql-client@8.0/bin"
+  ];
+
+  # Finance broker (NixOS only)
+  financeBroker = {
+    enable = false;
+    binaryPath = "/path/to/finance-broker";
+    configFile = "/path/to/config.toml";
+    secretSource = "/path/to/simplefin_access_url";
+  };
+}
