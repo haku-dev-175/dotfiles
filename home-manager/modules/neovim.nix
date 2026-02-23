@@ -28,6 +28,7 @@
       gcc
       gnumake
       cmake
+      luarocks
     ];
   };
 
