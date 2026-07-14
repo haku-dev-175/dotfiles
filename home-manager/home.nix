@@ -8,6 +8,7 @@
     ./modules/git.nix
     ./modules/starship.nix
     ./modules/development.nix
+    ./modules/anthropic-cli.nix
   ];
 
   home = {
