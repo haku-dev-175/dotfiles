@@ -48,4 +48,7 @@
   # Disable hibernation
   systemd.targets.hibernate.enable = false;
   systemd.targets.hybrid-sleep.enable = false;
+
+  # Containers
+  virtualisation.containers.enable = true;
 }

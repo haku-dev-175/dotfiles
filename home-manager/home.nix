@@ -44,6 +44,9 @@
       # Networking
       dnsmasq
 
+      # Container
+      podman
+
       # Messaging
       signal-cli
 
