@@ -50,6 +50,9 @@
       # Messaging
       signal-cli
 
+      # AI coding agents
+      opencode
+
       # Additional tools
       gnutls openssl libfido2 krb5 qrencode
 
