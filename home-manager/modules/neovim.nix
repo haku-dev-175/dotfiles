@@ -21,6 +21,7 @@
 
       # Tools
       tree-sitter
+      nodejs  # needed by tree-sitter CLI
       ripgrep
       fd
 
