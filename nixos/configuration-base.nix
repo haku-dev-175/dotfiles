@@ -58,5 +58,8 @@
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
+  # Package overrides (pinned pnpm, ...)
+  nixpkgs.overlays = [ (import ../overlays/pnpm.nix) ];
+
   system.stateVersion = "24.05";
 }

@@ -11,6 +11,7 @@
 
     # Languages
     nodejs
+    pnpm
     python3
 
     # Build essentials

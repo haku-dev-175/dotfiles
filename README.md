@@ -12,6 +12,7 @@ Declarative, reproducible development environment across NixOS, macOS (nix-darwi
 - **Git** with lazygit, diff-so-fancy, GitHub CLI (ssh)
 - **CLI tools**: ripgrep, fd, fzf, bat, eza, jq, httpie, atuin, and more
 - **Dev tools**: direnv + nix-direnv (per-project environments), rustup, awscli2, terraform-ls, vault, docker-compose, colima
+- **pnpm** pinned to an exact version in `overlays/pnpm.nix` (nixpkgs only ships pnpm 8/9/10, which lag upstream)
 
 **NixOS-specific**: GNOME desktop, PipeWire audio, PostgreSQL, MySQL, Redis, Memcached, Nginx, Docker, Tailscale, OpenSSH
 
@@ -178,6 +179,8 @@ dotfiles/
 ├── flake.lock
 ├── local.nix                    # Machine-specific overrides (edit per machine)
 ├── local.nix.example            # Documented template showing all options
+├── overlays/
+│   └── pnpm.nix                 # pnpm pinned to an exact version
 ├── nixos/
 │   ├── configuration.nix        # Bare-metal NixOS (boot, GNOME, audio, etc.)
 │   ├── configuration-wsl.nix    # NixOS-WSL specific config

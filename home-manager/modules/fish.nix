@@ -15,12 +15,19 @@
       set -gx ANDROID_HOME $HOME/Library/Android/sdk/
       set -gx PATH $ANDROID_HOME/platform-tools $PATH
 
-      # pnpm global bin
+      # pnpm global bin. Appended, not prepended: pnpm is pinned in nix
+      # (overlays/pnpm.nix), and a self-managed pnpm shim dropped in PNPM_HOME
+      # would otherwise shadow it.
       set -gx PNPM_HOME $HOME/.local/share/pnpm
-      fish_add_path --prepend $PNPM_HOME
+      fish_add_path --append $PNPM_HOME
 
       # Local bin
       set -gx PATH $HOME/.local/bin $PATH
+
+      # Kimi Code (installed via upstream install script)
+      if test -d $HOME/.kimi-code/bin
+          fish_add_path --append $HOME/.kimi-code/bin
+      end
 
       # Per-machine extra paths
       ${builtins.concatStringsSep "\n" (map (p: "fish_add_path --append ${p}") machineConfig.extraFishPaths)}

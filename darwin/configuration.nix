@@ -18,6 +18,9 @@
   # nixpkgs config
   nixpkgs.config.allowUnfree = true;
 
+  # Package overrides (pinned pnpm, ...)
+  nixpkgs.overlays = [ (import ../overlays/pnpm.nix) ];
+
   # macOS system settings
   system.defaults = {
     # Dock settings
