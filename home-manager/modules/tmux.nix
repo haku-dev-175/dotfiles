@@ -42,6 +42,10 @@
       set -ga terminal-overrides ",*256col*:Tc"
       set -g focus-events on
 
+      # Pass through modified keys (Shift+Enter etc.) for TUI apps
+      set -g extended-keys on
+      set -as terminal-features 'xterm*:extkeys'
+
       # Window settings
       set -g set-titles on
       set -g set-titles-string '#S ● #I #W'
