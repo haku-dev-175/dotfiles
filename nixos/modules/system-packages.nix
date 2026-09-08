@@ -28,5 +28,6 @@
     # System tools
     pciutils
     usbutils
+    bubblewrap  # sandbox used by codex (Linux only; macOS uses Seatbelt)
   ];
 }
