@@ -64,13 +64,6 @@
     };
   };
 
-  # Starship integration
-  programs.starship = {
-    enable = true;
-    enableFishIntegration = true;
-    settings = builtins.fromTOML (builtins.readFile ../../starship.toml);
-  };
-
   # Zoxide integration
   programs.zoxide = {
     enable = true;

@@ -6,7 +6,7 @@ Declarative, reproducible development environment across NixOS, macOS (nix-darwi
 
 **Shared across all platforms** (via home-manager):
 
-- **Fish shell** with starship prompt, zoxide, autojump, AI functions, and custom keybindings
+- **Fish shell** with tide prompt, zoxide, autojump, AI functions, and custom keybindings
 - **Tmux** with Ctrl-a prefix, vim navigation, sesh session switching, everforest theme, resurrect/continuum
 - **Neovim** (LazyVim) with LSPs (Nix, Lua, TypeScript, Terraform), CodeCompanion (Claude), vim-dadbod, rustaceanvim
 - **Git** with lazygit, diff-so-fancy, GitHub CLI (ssh)
@@ -203,16 +203,15 @@ dotfiles/
 │       ├── tmux.nix             # Tmux config and plugins
 │       ├── neovim.nix           # Neovim + LSPs + formatters
 │       ├── git.nix              # Git, GitHub CLI, lazygit
-│       ├── starship.nix         # Prompt config
+│       ├── tide.nix             # Prompt config (tide, fish-native)
 │       └── development.nix      # direnv, rustup
 ├── nvim/                        # Neovim config (LazyVim, managed by lazy.nvim)
 │   ├── init.lua
 │   ├── lua/config/
 │   └── lua/plugins/
-├── fish/
-│   ├── functions/               # Custom fish functions
-│   └── conf.d/                  # fish_ai plugin config
-└── starship.toml                # Starship prompt theme
+└── fish/
+    ├── functions/               # Custom fish functions
+    └── conf.d/                  # fish_ai plugin config
 ```
 
 ## Key bindings

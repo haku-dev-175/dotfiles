@@ -6,7 +6,7 @@
     ./modules/tmux.nix
     ./modules/neovim.nix
     ./modules/git.nix
-    ./modules/starship.nix
+    ./modules/tide.nix
     ./modules/development.nix
     ./modules/anthropic-cli.nix
   ];
