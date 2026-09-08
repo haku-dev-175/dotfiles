@@ -43,7 +43,9 @@ in
       # (overlays/pnpm.nix), and a self-managed pnpm shim dropped in PNPM_HOME
       # would otherwise shadow it.
       set -gx PNPM_HOME $HOME/.local/share/pnpm
-      fish_add_path --append $PNPM_HOME
+      # pnpm 11 moved the global bin dir from $PNPM_HOME to $PNPM_HOME/bin;
+      # the old path stays for globals installed by pnpm 10.
+      fish_add_path --append $PNPM_HOME/bin $PNPM_HOME
 
       # Local bin
       set -gx PATH $HOME/.local/bin $PATH

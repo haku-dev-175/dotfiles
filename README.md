@@ -204,6 +204,7 @@ dotfiles/
 │       ├── neovim.nix           # Neovim + LSPs + formatters
 │       ├── git.nix              # Git, GitHub CLI, lazygit
 │       ├── tide.nix             # Prompt config (tide, fish-native)
+│       ├── codex.nix            # OpenAI Codex CLI (pinned npm tarball)
 │       └── development.nix      # direnv, rustup
 ├── nvim/                        # Neovim config (LazyVim, managed by lazy.nvim)
 │   ├── init.lua

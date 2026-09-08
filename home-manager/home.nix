@@ -11,6 +11,7 @@
     ./modules/anthropic-cli.nix
     ./modules/agent-fleet.nix
     ./modules/ghostty.nix
+    ./modules/codex.nix
   ];
 
   home = {
