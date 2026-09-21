@@ -17,6 +17,9 @@ in
       # Set editor
       set -gx EDITOR nvim
 
+      # Rails/Ruby on macOS aborts on fork without this (matches ~/.zshrc).
+      set -gx OBJC_DISABLE_INITIALIZE_FORK_SAFETY YES
+
       # Inlined `brew shellenv`, whose output is static — calling it cost ~29ms
       # of every startup. Appended rather than prepended so Nix stays ahead of
       # brew on PATH. brew's own MANPATH line only normalises an already-set
@@ -61,6 +64,18 @@ in
       # Source secrets file
       if test -f ~/.config/fish/secrets.fish
           source ~/.config/fish/secrets.fish
+      end
+
+      # mise owns the language runtimes (node/ruby/yarn via ~/.tool-versions).
+      # It prepends its shims, so mise wins over Nix for those, as in ~/.zshrc.
+      if test -x /opt/homebrew/bin/mise
+          /opt/homebrew/bin/mise activate fish | source
+      end
+
+      # Otto's generated fish extension. Regenerate with `reload --force`.
+      # Sourced in place rather than vendored: it holds live credentials.
+      if test -f ~/.otto/shell-extensions/config.fish
+          source ~/.otto/shell-extensions/config.fish
       end
     '';
 

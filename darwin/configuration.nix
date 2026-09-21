@@ -20,6 +20,22 @@
   # Set outside fish too, so non-fish contexts (git, sudoedit, cron) agree.
   environment.variables.EDITOR = "nvim";
 
+  # The Kandji-managed /etc/zshenv exports the Netskope CA bundle for zsh only.
+  # fish is the login shell now, so mirror it through set-environment, which
+  # every shell reads. Same -f guard as the MDM file; only paths, no secrets.
+  environment.extraInit = ''
+    if [ -f /opt/netskope-certs/netskope-bundle.pem ]; then
+      export SSL_CERT_FILE=/opt/netskope-certs/netskope-bundle.pem
+      export REQUESTS_CA_BUNDLE=/opt/netskope-certs/netskope-bundle.pem
+      export CURL_CA_BUNDLE=/opt/netskope-certs/netskope-bundle.pem
+      export NODE_EXTRA_CA_CERTS=/opt/netskope-certs/netskope-bundle.pem
+      export NODE_OPTIONS=--use-openssl-ca
+      export GIT_SSL_CAINFO=/opt/netskope-certs/netskope-bundle.pem
+      export AWS_CA_BUNDLE=/opt/netskope-certs/netskope-bundle.pem
+      export GAM_CA_FILE=/opt/netskope-certs/netskope-bundle.pem
+    fi
+  '';
+
   # nix-darwin defaults this to 30000 below stateVersion 5; the modern
   # installer creates the group as 350.
   ids.gids.nixbld = 350;
