@@ -60,6 +60,10 @@
       # Clipboard — X11/Wayland only
       xclip
       wl-clipboard
+    ] ++ lib.optionals stdenv.hostPlatform.isDarwin [
+      # Docker CLI. NixOS gets it from virtualisation.docker; on macOS colima
+      # provides the daemon but nothing here shipped a client.
+      docker-client
     ];
   };
 

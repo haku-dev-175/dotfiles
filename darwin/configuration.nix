@@ -66,6 +66,10 @@
   # Enable Fish shell system-wide
   programs.fish.enable = true;
 
+  # programs.fish.enable does not register fish in /etc/shells, so `chsh` to it
+  # is rejected without this.
+  environment.shells = [ pkgs.fish ];
+
   programs.zsh.enable = false;
   programs.bash.enable = false;
 

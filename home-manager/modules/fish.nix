@@ -34,13 +34,6 @@
     '';
 
     interactiveShellInit = ''
-      # Autojump
-      if test -f /opt/homebrew/share/autojump/autojump.fish
-          source /opt/homebrew/share/autojump/autojump.fish
-      else if test -f /usr/share/autojump/autojump.fish
-          source /usr/share/autojump/autojump.fish
-      end
-
       # Buildpack CLI completion (if pack is available)
       if command -q pack
           source (pack completion --shell fish)
@@ -66,6 +59,14 @@
 
   # Zoxide integration
   programs.zoxide = {
+    enable = true;
+    enableFishIntegration = true;
+  };
+
+  # Autojump. The module installs the package and sources its own fish
+  # integration; the previous hand-rolled sourcing only looked in homebrew and
+  # /usr/share, so it silently did nothing under Nix.
+  programs.autojump = {
     enable = true;
     enableFishIntegration = true;
   };
