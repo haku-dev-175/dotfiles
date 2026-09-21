@@ -13,6 +13,24 @@
     # "/opt/homebrew/opt/mysql-client@8.0/bin"
   ];
 
+  # Path to a CA bundle this machine's tooling must trust, e.g. one installed
+  # by corporate MDM. Re-exported to every shell (macOS). null to skip.
+  caBundle = null;
+
+  # Whether nix-darwin manages /etc/zshrc, /etc/zshenv and /etc/bashrc.
+  # Set false when something else owns them, such as an MDM agent, or
+  # activation will refuse to overwrite them. Defaults to true.
+  manageZshAndBash = true;
+
+  # Extra fish interactive setup for this machine: version managers, employer
+  # tooling, anything not worth committing. Sourced after the secrets file.
+  extraFishInit = "";
+  # extraFishInit = ''
+  #     if test -x /opt/homebrew/bin/mise
+  #         /opt/homebrew/bin/mise activate fish | source
+  #     end
+  # '';
+
   # Finance broker (NixOS only)
   financeBroker = {
     enable = false;

@@ -1,5 +1,9 @@
-{ config, pkgs, localConfig, self, ... }:
+{ config, pkgs, lib, localConfig, self, ... }:
 
+let
+  caBundle = localConfig.caBundle or null;
+  manageZshAndBash = localConfig.manageZshAndBash or true;
+in
 {
   imports = [
     ./modules/system-packages.nix
@@ -20,19 +24,19 @@
   # Set outside fish too, so non-fish contexts (git, sudoedit, cron) agree.
   environment.variables.EDITOR = "nvim";
 
-  # The Kandji-managed /etc/zshenv exports the Netskope CA bundle for zsh only.
-  # fish is the login shell now, so mirror it through set-environment, which
-  # every shell reads. Same -f guard as the MDM file; only paths, no secrets.
-  environment.extraInit = ''
-    if [ -f /opt/netskope-certs/netskope-bundle.pem ]; then
-      export SSL_CERT_FILE=/opt/netskope-certs/netskope-bundle.pem
-      export REQUESTS_CA_BUNDLE=/opt/netskope-certs/netskope-bundle.pem
-      export CURL_CA_BUNDLE=/opt/netskope-certs/netskope-bundle.pem
-      export NODE_EXTRA_CA_CERTS=/opt/netskope-certs/netskope-bundle.pem
+  # A managed machine may ship a CA bundle its tooling has to trust, often
+  # exported for one shell only. Routing it through set-environment reaches
+  # every shell. Set local.nix's caBundle to the .pem to enable it.
+  environment.extraInit = lib.optionalString (caBundle != null) ''
+    if [ -f ${caBundle} ]; then
+      export SSL_CERT_FILE=${caBundle}
+      export REQUESTS_CA_BUNDLE=${caBundle}
+      export CURL_CA_BUNDLE=${caBundle}
+      export NODE_EXTRA_CA_CERTS=${caBundle}
       export NODE_OPTIONS=--use-openssl-ca
-      export GIT_SSL_CAINFO=/opt/netskope-certs/netskope-bundle.pem
-      export AWS_CA_BUNDLE=/opt/netskope-certs/netskope-bundle.pem
-      export GAM_CA_FILE=/opt/netskope-certs/netskope-bundle.pem
+      export GIT_SSL_CAINFO=${caBundle}
+      export AWS_CA_BUNDLE=${caBundle}
+      export GAM_CA_FILE=${caBundle}
     fi
   '';
 
@@ -102,8 +106,9 @@
   # is rejected without this.
   environment.shells = [ pkgs.fish ];
 
-  programs.zsh.enable = false;
-  programs.bash.enable = false;
+  # Off where an MDM owns /etc/zshenv and friends; nix-darwin would fight it.
+  programs.zsh.enable = manageZshAndBash;
+  programs.bash.enable = manageZshAndBash;
 
   security.pam.services.sudo_local.touchIdAuth = true;
 

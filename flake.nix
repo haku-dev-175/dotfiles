@@ -33,6 +33,7 @@
         extraFishPaths = localConfig.extraFishPaths;
         gitUserName = localConfig.gitUserName or "Yingbai He";
         gitUserEmail = localConfig.gitUserEmail or "haku.dev@outlook.com";
+        extraFishInit = localConfig.extraFishInit or "";
       };
     in
     {

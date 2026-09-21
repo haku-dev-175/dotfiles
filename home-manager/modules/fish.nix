@@ -66,17 +66,8 @@ in
           source ~/.config/fish/secrets.fish
       end
 
-      # mise owns the language runtimes (node/ruby/yarn via ~/.tool-versions).
-      # It prepends its shims, so mise wins over Nix for those, as in ~/.zshrc.
-      if test -x /opt/homebrew/bin/mise
-          /opt/homebrew/bin/mise activate fish | source
-      end
-
-      # Otto's generated fish extension. Regenerate with `reload --force`.
-      # Sourced in place rather than vendored: it holds live credentials.
-      if test -f ~/.otto/shell-extensions/config.fish
-          source ~/.otto/shell-extensions/config.fish
-      end
+      # Per-machine interactive setup (version managers, employer tooling).
+      ${machineConfig.extraFishInit}
     '';
 
     # ls/ll come from programs.eza's fish integration below.
