@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, machineConfig, ... }:
 
 {
   programs.git = {
@@ -6,8 +6,8 @@
 
     settings = {
       user = {
-        name = "Yingbai He";
-        email = "haku.dev@outlook.com";
+        name = machineConfig.gitUserName;
+        email = machineConfig.gitUserEmail;
       };
 
       init.defaultBranch = "main";

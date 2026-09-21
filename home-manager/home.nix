@@ -1,4 +1,4 @@
-{ config, pkgs, machineConfig, ... }:
+{ config, pkgs, lib, machineConfig, ... }:
 
 {
   imports = [
@@ -35,9 +35,6 @@
       jq httpie atuin imagemagick gnupg certbot
       helix watchman
 
-      # Clipboard (Linux)
-      xclip wl-clipboard
-
       # Cloud Native
       pack  # Cloud Native Buildpacks
 
@@ -59,6 +56,10 @@
       # Nerd Fonts (for terminal icons)
       nerd-fonts.jetbrains-mono
       nerd-fonts.fira-code
+    ] ++ lib.optionals stdenv.hostPlatform.isLinux [
+      # Clipboard — X11/Wayland only
+      xclip
+      wl-clipboard
     ];
   };
 

@@ -26,6 +26,14 @@
   outputs = { self, nixpkgs, home-manager, nix-darwin, nixos-wsl, ... }:
     let
       localConfig = import ./local.nix;
+
+      machineConfig = {
+        username = localConfig.username;
+        homeDirectory = localConfig.homeDirectory;
+        extraFishPaths = localConfig.extraFishPaths;
+        gitUserName = localConfig.gitUserName or "Yingbai He";
+        gitUserEmail = localConfig.gitUserEmail or "haku.dev@outlook.com";
+      };
     in
     {
       # ========================================
@@ -46,11 +54,7 @@
               home-manager.backupFileExtension = "backup";
               home-manager.users.${localConfig.username} = import ./home-manager/home.nix;
               home-manager.extraSpecialArgs = {
-                machineConfig = {
-                  username = localConfig.username;
-                  homeDirectory = localConfig.homeDirectory;
-                  extraFishPaths = localConfig.extraFishPaths;
-                };
+                inherit machineConfig;
               };
             }
           ];
@@ -71,11 +75,7 @@
               home-manager.backupFileExtension = "backup";
               home-manager.users.${localConfig.username} = import ./home-manager/home.nix;
               home-manager.extraSpecialArgs = {
-                machineConfig = {
-                  username = localConfig.username;
-                  homeDirectory = localConfig.homeDirectory;
-                  extraFishPaths = localConfig.extraFishPaths;
-                };
+                inherit machineConfig;
               };
             }
           ];
@@ -88,6 +88,7 @@
       darwinConfigurations = {
         mac = nix-darwin.lib.darwinSystem {
           system = "aarch64-darwin";
+          specialArgs = { inherit localConfig; };
           modules = [
             ./darwin/configuration.nix
 
@@ -96,13 +97,10 @@
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
+              home-manager.backupFileExtension = "backup";
               home-manager.users.${localConfig.username} = import ./home-manager/home.nix;
               home-manager.extraSpecialArgs = {
-                machineConfig = {
-                  username = localConfig.username;
-                  homeDirectory = localConfig.homeDirectory;
-                  extraFishPaths = localConfig.extraFishPaths;
-                };
+                inherit machineConfig;
               };
             }
           ];
@@ -119,11 +117,7 @@
             ./home-manager/home.nix
           ];
           extraSpecialArgs = {
-            machineConfig = {
-              username = localConfig.username;
-              homeDirectory = localConfig.homeDirectory;
-              extraFishPaths = localConfig.extraFishPaths;
-            };
+            inherit machineConfig;
           };
         };
       };

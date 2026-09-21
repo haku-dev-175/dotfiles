@@ -8,7 +8,7 @@
     # Automatically update Homebrew and cleanup old versions
     onActivation = {
       autoUpdate = true;
-      cleanup = "zap";
+      cleanup = "none";  # "zap" would uninstall brew packages not declared here
     };
 
     # GUI Applications (Casks) - things not available in nixpkgs
