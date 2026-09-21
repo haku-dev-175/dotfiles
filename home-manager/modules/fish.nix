@@ -1,5 +1,14 @@
 { config, pkgs, machineConfig, ... }:
 
+let
+  # `pack completion` writes the script and prints its path. Generate it once at
+  # build time rather than spawning pack on every interactive startup.
+  packFishCompletions = pkgs.runCommand "pack-fish-completions" { } ''
+    export HOME=$(mktemp -d)
+    ${pkgs.pack}/bin/pack completion --shell fish > /dev/null
+    cp "$HOME/.pack/completion.fish" $out
+  '';
+in
 {
   programs.fish = {
     enable = true;
@@ -8,11 +17,16 @@
       # Set editor
       set -gx EDITOR nvim
 
-      # shellenv also exports HOMEBREW_PREFIX, MANPATH and INFOPATH. It
-      # prepends brew to PATH, so move it back behind Nix afterwards.
-      if test -x /opt/homebrew/bin/brew
-          eval (/opt/homebrew/bin/brew shellenv)
-          fish_add_path --move --append /opt/homebrew/bin /opt/homebrew/sbin
+      # Inlined `brew shellenv`, whose output is static — calling it cost ~29ms
+      # of every startup. Appended rather than prepended so Nix stays ahead of
+      # brew on PATH. brew's own MANPATH line only normalises an already-set
+      # MANPATH, so there is nothing to reproduce for it.
+      if test -d /opt/homebrew
+          set -gx HOMEBREW_PREFIX /opt/homebrew
+          set -gx HOMEBREW_CELLAR /opt/homebrew/Cellar
+          set -gx HOMEBREW_REPOSITORY /opt/homebrew/Homebrew
+          fish_add_path --global --move --append /opt/homebrew/bin /opt/homebrew/sbin
+          set -gx INFOPATH /opt/homebrew/share/info $INFOPATH
       end
 
       # GPG TTY
@@ -41,10 +55,8 @@
     '';
 
     interactiveShellInit = ''
-      # Buildpack CLI completion (if pack is available)
-      if command -q pack
-          source (pack completion --shell fish)
-      end
+      # Buildpack CLI completion, generated at build time (see let block)
+      source ${packFishCompletions}
 
       # Source secrets file
       if test -f ~/.config/fish/secrets.fish
@@ -102,6 +114,13 @@
     source = ../../fish/functions;
     recursive = true;
   };
+
+  # autojump derives OSTYPE by spawning bash, costing ~10ms of every startup.
+  # It is loaded from its own vendor_conf.d, i.e. before config.fish, so setting
+  # this in shellInit is too late. conf.d is sourced in basename order across all
+  # conf.d dirs, so 00- lands first. The value only feeds a darwin*/linux* glob.
+  xdg.configFile."fish/conf.d/00-ostype.fish".text =
+    "set -gx OSTYPE ${if pkgs.stdenv.hostPlatform.isDarwin then "darwin" else "linux-gnu"}\n";
 
   # Preserve any conf.d files
   xdg.configFile."fish/conf.d" = {
