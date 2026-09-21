@@ -12,7 +12,7 @@
 
     # Languages
     nodejs
-    pnpm
+    pnpm-pinned  # exact version pinned in overlays/pnpm.nix
     python3
 
     # Build essentials

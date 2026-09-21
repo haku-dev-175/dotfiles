@@ -1,7 +1,18 @@
 # Pin pnpm to an exact version, independent of what nixpkgs ships.
 #
-# nixpkgs only carries pnpm_8/_9/_10, so `pkgs.pnpm` lags well behind upstream.
 # This overlay builds the published npm tarball directly.
+#
+# It exposes ONLY `pnpm-pinned`, and deliberately shadows no nixpkgs attribute.
+# Both `pkgs.pnpm` and the versioned `pkgs.pnpm_*` attrs are real packages that
+# other derivations build against (prettier does `pnpm = pnpm_11`), and they
+# consume passthru this derivation does not provide — `pnpm.nodejs-slim`,
+# `pnpm.fetchDeps`, `pnpm.configHook`. Overriding any of those names breaks
+# those builds. Reference `pnpm-pinned` from package lists instead; it still
+# installs `pnpm`/`pnpx`/`pn`/`pnx` into the profile, so PATH is unchanged.
+#
+# As of nixpkgs 2026-09 upstream carries pnpm 12.3.4 (`pnpm`) and 11.27.0
+# (`pnpm_11`), so this overlay is now only about holding an exact version
+# rather than about nixpkgs lagging. Drop it if the exact pin stops mattering.
 #
 # To bump: change `version`, then run
 #   nix store prefetch-file https://registry.npmjs.org/pnpm/-/pnpm-<version>.tgz
@@ -77,6 +88,5 @@ let
   });
 in
 {
-  inherit pnpm;
-  pnpm_11 = pnpm;
+  pnpm-pinned = pnpm;
 }

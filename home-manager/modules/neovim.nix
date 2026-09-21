@@ -6,17 +6,23 @@
     viAlias = true;
     vimAlias = true;
 
+    # Pinned explicitly: home-manager flipped these defaults to false in 26.05
+    # and warns while home.stateVersion is older. Set false to slim the closure
+    # if no plugin needs the Ruby/Python remote-plugin providers.
+    withRuby = true;
+    withPython3 = true;
+
     # System packages for Neovim/plugins
     extraPackages = with pkgs; [
       # LSP servers
       nil  # Nix LSP
       lua-language-server
-      nodePackages.typescript-language-server
-      nodePackages.vscode-langservers-extracted
+      typescript-language-server
+      vscode-langservers-extracted
       terraform-ls
 
       # Formatters
-      nodePackages.prettier
+      prettier
       stylua
 
       # Tools
