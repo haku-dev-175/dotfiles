@@ -19,21 +19,24 @@
     # Packages without special config
     packages = with pkgs; [
       # Search & File Tools
-      ripgrep fd fzf bat eza zoxide
+      ripgrep fd fzf bat zoxide
 
       # Git ecosystem
       gh git-lfs lazygit diff-so-fancy
 
       # DevOps
-      awscli2 terraform-ls vault docker-compose
+      awscli2 terraform terraform-ls vault docker-compose
       colima  # Docker runtime (lightweight alternative to Docker Desktop)
+
+      # Kubernetes
+      kubectl k9s helmfile
 
       # Tmux tools
       sesh tmuxinator
 
       # Utilities
       jq httpie atuin imagemagick gnupg certbot
-      helix watchman
+      helix watchman glow htop
 
       # Cloud Native
       pack  # Cloud Native Buildpacks
@@ -61,8 +64,7 @@
       xclip
       wl-clipboard
     ] ++ lib.optionals stdenv.hostPlatform.isDarwin [
-      # Docker CLI. NixOS gets it from virtualisation.docker; on macOS colima
-      # provides the daemon but nothing here shipped a client.
+      # NixOS gets its client from virtualisation.docker.
       docker-client
     ];
   };

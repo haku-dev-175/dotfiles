@@ -63,6 +63,8 @@
       bind r source-file ~/.config/tmux/tmux.conf \; display "Config reloaded!"
       bind | split-window -h -c "#{pane_current_path}"
       bind - split-window -v -c "#{pane_current_path}"
+      unbind '"'
+      unbind %
 
       # Vim navigation
       bind h select-pane -L
@@ -94,12 +96,16 @@
       bind Enter copy-mode
       bind -T copy-mode-vi v send-keys -X begin-selection
       bind -T copy-mode-vi y send-keys -X copy-selection-and-cancel
+      unbind -T copy-mode-vi Enter
 
       # Sesh integration
       bind-key "o" display-popup -E -w 35% -h 60% \
         "sesh connect \$(sesh list --icons | fzf --no-sort --no-info --no-scrollbar --cycle --reverse --ansi --bind='tab:down,shift-tab:up,ctrl-j:accept' --prompt='⚡ ')"
       bind-key "O" run-shell "sesh connect \$(sesh list -t | head -1)"
       bind-key "C-o" run-shell "sesh connect \$(pwd)"
+
+      # Project session layouts (see tmux/scripts/)
+      bind D run-shell "~/.config/tmux/scripts/dev-node.sh node-dev #{pane_current_path}"
 
       # ── Everforest Dark Medium Theme ──
       # Color palette
@@ -173,6 +179,12 @@
       set -g window-status-format '#[fg=#{@everforest_grey0},bg=#{@everforest_bg0}] #I  #[fg=#{@everforest_grey0},bg=#{@everforest_bg0}]#W '
       set -g window-status-current-format '#[fg=#{@everforest_bg0},bg=#{@everforest_bg_green}]#[fg=#{@everforest_fg},bg=#{@everforest_bg_green}] #I  #[fg=#{@everforest_fg},bg=#{@everforest_bg_green},bold]#W #[fg=#{@everforest_bg_green},bg=#{@everforest_bg0},nobold]'
     '';
+  };
+
+  xdg.configFile."tmux/scripts" = {
+    source = ../../tmux/scripts;
+    recursive = true;
+    executable = true;
   };
 
   # Additional packages

@@ -88,7 +88,7 @@
       darwinConfigurations = {
         mac = nix-darwin.lib.darwinSystem {
           system = "aarch64-darwin";
-          specialArgs = { inherit localConfig; };
+          specialArgs = { inherit localConfig self; };
           modules = [
             ./darwin/configuration.nix
 

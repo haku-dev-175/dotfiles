@@ -8,6 +8,13 @@
       # Set editor
       set -gx EDITOR nvim
 
+      # shellenv also exports HOMEBREW_PREFIX, MANPATH and INFOPATH. It
+      # prepends brew to PATH, so move it back behind Nix afterwards.
+      if test -x /opt/homebrew/bin/brew
+          eval (/opt/homebrew/bin/brew shellenv)
+          fish_add_path --move --append /opt/homebrew/bin /opt/homebrew/sbin
+      end
+
       # GPG TTY
       set -gx GPG_TTY (tty)
 
@@ -45,9 +52,9 @@
       end
     '';
 
+    # ls/ll come from programs.eza's fish integration below.
     shellAliases = {
       lg = "lazygit";
-      ll = "eza -l";
       ta = "tmux attach";
       vim = "nvim";
     };
@@ -63,9 +70,28 @@
     enableFishIntegration = true;
   };
 
-  # Autojump. The module installs the package and sources its own fish
-  # integration; the previous hand-rolled sourcing only looked in homebrew and
-  # /usr/share, so it silently did nothing under Nix.
+  programs.eza = {
+    enable = true;
+    git = true;
+    icons = "auto";
+    enableFishIntegration = true;
+  };
+
+  programs.yazi = {
+    enable = true;
+    enableFishIntegration = true;
+    # home-manager still defaults this to "yy" below stateVersion 26.05.
+    shellWrapperName = "y";
+    settings = {
+      mgr = {
+        show_hidden = true;
+        sort_dir_first = true;
+      };
+    };
+  };
+
+  # Sources its integration from the store path; the previous hand-rolled
+  # version only looked in homebrew and /usr/share, so it never fired.
   programs.autojump = {
     enable = true;
     enableFishIntegration = true;
