@@ -29,6 +29,19 @@ in `~/.zshrc`).
       (`nix/nix-darwin/modules/packages.nix:20-24`). Each app must have been
       installed manually once under the same Apple account first.
 
+## Container runtime overlap
+
+- [ ] **Docker Desktop is the active runtime on this machine**, and it is
+      IT-provisioned: `/usr/local/bin/docker` 29.8.0, `credsStore: desktop`,
+      `currentContext: desktop-linux`. The dotfiles also install `colima`
+      ("lightweight alternative to Docker Desktop") and `docker-client`, so
+      three sources now overlap. Nix's client is the same 29.8.0 and
+      `docker-credential-desktop` stays on PATH, so nothing breaks — but
+      `colima` has never been started here and the README's `colima start`
+      would stand up a second daemon. Decide whether this machine keeps Docker
+      Desktop, in which case `colima` and `docker-client` can come out of the
+      darwin path, or moves to colima, in which case Docker Desktop should go.
+
 ## Automation
 
 - [ ] **Port `install.sh` and `check.sh`** (5.3 KB / 5.0 KB at the alt repo
