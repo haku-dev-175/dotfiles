@@ -7,11 +7,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1789767053,
-        "narHash": "sha256-S/n2hur3s0JJAt8QpSciNS+lDoazz+42p+D3P7fP0e4=",
+        "lastModified": 1790044820,
+        "narHash": "sha256-gKauGdHdSNLvhOUsfvtt5gK8k1H3yq/RFGj2v0sFHy0=",
         "owner": "hyb175",
         "repo": "agent-fleet",
-        "rev": "c19260c49ddbce91c88a80e7993e07201138f30e",
+        "rev": "71c9af5a9edbd1d0e7a22f3820f129fbae030a7e",
         "type": "github"
       },
       "original": {
