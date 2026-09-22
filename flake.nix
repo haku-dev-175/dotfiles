@@ -21,9 +21,16 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # tmux-native fleet manager for coding agents (own flake, wrapped with its
+    # runtime deps incl. bash 5 — no host bash 4 needed).
+    agent-fleet = {
+      url = "github:hyb175/agent-fleet";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
   };
 
-  outputs = { self, nixpkgs, home-manager, nix-darwin, nixos-wsl, ... }:
+  outputs = { self, nixpkgs, home-manager, nix-darwin, nixos-wsl, ... }@inputs:
     let
       localConfig = import ./local.nix;
 
@@ -55,7 +62,7 @@
               home-manager.backupFileExtension = "backup";
               home-manager.users.${localConfig.username} = import ./home-manager/home.nix;
               home-manager.extraSpecialArgs = {
-                inherit machineConfig;
+                inherit machineConfig inputs;
               };
             }
           ];
@@ -76,7 +83,7 @@
               home-manager.backupFileExtension = "backup";
               home-manager.users.${localConfig.username} = import ./home-manager/home.nix;
               home-manager.extraSpecialArgs = {
-                inherit machineConfig;
+                inherit machineConfig inputs;
               };
             }
           ];
@@ -101,7 +108,7 @@
               home-manager.backupFileExtension = "backup";
               home-manager.users.${localConfig.username} = import ./home-manager/home.nix;
               home-manager.extraSpecialArgs = {
-                inherit machineConfig;
+                inherit machineConfig inputs;
               };
             }
           ];
@@ -124,7 +131,7 @@
             ./home-manager/home.nix
           ];
           extraSpecialArgs = {
-            inherit machineConfig;
+            inherit machineConfig inputs;
           };
         };
       };

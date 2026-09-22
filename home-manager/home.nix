@@ -9,6 +9,7 @@
     ./modules/tide.nix
     ./modules/development.nix
     ./modules/anthropic-cli.nix
+    ./modules/agent-fleet.nix
     ./modules/ghostty.nix
   ];
 
