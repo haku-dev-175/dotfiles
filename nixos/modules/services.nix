@@ -20,10 +20,12 @@
     bind = "127.0.0.1";
   };
 
-  # MySQL 8.0
+  # MySQL 8.4 (8.0 hit EOL 2026-04-30 and left nixpkgs; 8.4 is the successor
+  # LTS. The server upgrades an existing 8.0 datadir in place on first start,
+  # one way.)
   services.mysql = {
     enable = true;
-    package = pkgs.mysql80;
+    package = pkgs.mysql84;
   };
 
   # Nginx

@@ -113,7 +113,13 @@
       # ========================================
       homeConfigurations = {
         wsl = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.x86_64-linux;
+          # Not legacyPackages: this path has no NixOS/darwin module to carry
+          # nixpkgs.config, and home.packages holds unfree ones (terraform,
+          # vault are BUSL).
+          pkgs = import nixpkgs {
+            system = "x86_64-linux";
+            config.allowUnfree = true;
+          };
           modules = [
             ./home-manager/home.nix
           ];

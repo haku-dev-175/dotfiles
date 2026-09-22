@@ -8,6 +8,9 @@
   programs.ghostty = {
     enable = true;
     package = null;
+    # package = null means there is no unit to run, but the option defaults to
+    # true on Linux and the module asserts on the pair.
+    systemd.enable = false;
 
     settings = {
       # tide's prompt and the tmux status line are built from Nerd Font
