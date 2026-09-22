@@ -9,6 +9,7 @@
     ./modules/tide.nix
     ./modules/development.nix
     ./modules/anthropic-cli.nix
+    ./modules/ghostty.nix
   ];
 
   home = {
@@ -56,13 +57,15 @@
       # Additional tools
       gnutls openssl libfido2 krb5 qrencode
 
-      # Nerd Fonts (for terminal icons)
-      nerd-fonts.jetbrains-mono
-      nerd-fonts.fira-code
     ] ++ lib.optionals stdenv.hostPlatform.isLinux [
       # Clipboard — X11/Wayland only
       xclip
       wl-clipboard
+
+      # On darwin these come from fonts.packages, which registers them with
+      # the OS; installing them here as well duplicated every face.
+      nerd-fonts.jetbrains-mono
+      nerd-fonts.fira-code
     ] ++ lib.optionals stdenv.hostPlatform.isDarwin [
       # NixOS gets its client from virtualisation.docker.
       docker-client
