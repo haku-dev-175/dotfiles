@@ -14,6 +14,13 @@
       pull.rebase = true;
       core.pager = "diff-so-fancy | less --tabs=4 -RFX";
 
+      # gh builds canonical git@github.com URLs, so a repo whose owner needs a
+      # non-default SSH key is unreachable over ssh. Rewrite those onto the
+      # ~/.ssh/config Host alias that carries the right key. Machine-local,
+      # because the aliases live in an unmanaged ~/.ssh/config.
+      url = builtins.mapAttrs (_: canonical: { insteadOf = canonical; })
+        machineConfig.gitUrlRewrites;
+
       color = {
         ui = true;
         diff-highlight = {

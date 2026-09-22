@@ -13,6 +13,15 @@
     # "/opt/homebrew/opt/mysql-client@8.0/bin"
   ];
 
+  # Rewrite git URL prefixes, for repos whose owner needs a non-default SSH
+  # key. gh always builds canonical git@github.com URLs, so map those onto the
+  # ~/.ssh/config Host alias holding the right key. Attr name is the
+  # replacement prefix, value is the canonical prefix it stands in for.
+  gitUrlRewrites = { };
+  # gitUrlRewrites = {
+  #   "git@github-personal:hyb175/" = "git@github.com:hyb175/";
+  # };
+
   # Path to a CA bundle this machine's tooling must trust, e.g. one installed
   # by corporate MDM. Re-exported to every shell (macOS). null to skip.
   caBundle = null;
