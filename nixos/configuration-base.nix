@@ -42,6 +42,10 @@
   # Enable nix-ld for running dynamically linked binaries (AppImages, etc.)
   programs.nix-ld.enable = true;
 
+  # uv/python-build-standalone runtimes look for /etc/ssl/cert.pem, which
+  # NixOS does not provide.
+  environment.sessionVariables.SSL_CERT_FILE = "/etc/ssl/certs/ca-certificates.crt";
+
   # Enable Nix flakes
   nix.settings = {
     experimental-features = [ "nix-command" "flakes" ];
