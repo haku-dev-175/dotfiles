@@ -28,9 +28,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # Rex terminal multiplexer (prebuilt, snapshot channel)
+    rex.url = "https://pkgs.superlogical.com/rex/nix/snapshot.tar.gz";
   };
 
-  outputs = { self, nixpkgs, home-manager, nix-darwin, nixos-wsl, ... }@inputs:
+  outputs = { self, nixpkgs, home-manager, nix-darwin, nixos-wsl, rex, ... }@inputs:
     let
       localConfig = import ./local.nix;
 
@@ -62,6 +64,10 @@
               home-manager.useUserPackages = true;
               home-manager.backupFileExtension = "backup";
               home-manager.users.${localConfig.username} = import ./home-manager/home.nix;
+              home-manager.sharedModules = [
+                rex.homeManagerModules.default
+                ./home-manager/modules/rex.nix
+              ];
               home-manager.extraSpecialArgs = {
                 inherit machineConfig inputs;
               };
